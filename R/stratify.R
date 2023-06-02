@@ -145,6 +145,7 @@ stratify <- function(by,
                      quiet = FALSE) {
 
   # Checks
+  check_in(level, c("state", "stop"))
   by <- check_strata(by, custom = strata_custom, quiet = quiet)
   stratify_by <- by[1]
   stratify_type <- by[2]
@@ -153,7 +154,9 @@ stratify <- function(by,
   check_release(release)
 
   # Load BBS Data (full or sample)
-  bbs_data <- load_bbs_data(release = release, sample = sample_data,
+  bbs_data <- load_bbs_data(release = release,
+                            level = level,
+                            sample = sample_data,
                             quiet = quiet)
 
   # Load and filter bbs data
