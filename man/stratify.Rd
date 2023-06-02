@@ -9,6 +9,7 @@ stratify(
   species,
   strata_custom = NULL,
   combine_species_forms = TRUE,
+  level = "state",
   release = 2022,
   sample_data = FALSE,
   return_omitted = FALSE,
@@ -30,6 +31,9 @@ polygons defining the custom stratifications. See Details.}
 
 \item{combine_species_forms}{Logical. Whether to combine ambiguous species
 forms. Default \code{TRUE}. See Details.}
+
+\item{level}{Character. Which type of BBS counts to use, "state" or "stop".
+Default "state".}
 
 \item{release}{Numeric. Which yearly release to use, 2022 (including data
 through 2021 field season) or 2020 (including data through 2019). Default
