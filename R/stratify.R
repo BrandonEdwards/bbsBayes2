@@ -24,6 +24,8 @@
 #'   route-years which were omitted during stratification as they did not
 #'   overlap with any stratum. For checking and troubleshooting. Default
 #'   `FALSE`.
+#' @param data_custom List of dataframes that should be exactly like BBS data.
+#'   WARNING: Use at your own risk!
 #'
 #' @inheritParams common_docs
 #' @family Data prep functions
@@ -142,7 +144,8 @@ stratify <- function(by,
                      release = 2022,
                      sample_data = FALSE,
                      return_omitted = FALSE,
-                     quiet = FALSE) {
+                     quiet = FALSE,
+                     data_custom = NULL) {
 
   # Checks
   check_in(level, c("state", "stop"))
@@ -153,12 +156,17 @@ stratify <- function(by,
   check_logical(combine_species_forms, sample_data, quiet)
   check_release(release)
 
-  # Load BBS Data (full or sample)
-  bbs_data <- load_bbs_data(release = release,
-                            level = level,
-                            sample = sample_data,
-                            quiet = quiet)
-
+  if (!is.null(data_custom))
+  {
+    bbs_data <- data_custom
+    rm(data_custom)
+  }else{
+    # Load BBS Data (full or sample)
+    bbs_data <- load_bbs_data(release = release,
+                              level = level,
+                              sample = sample_data,
+                              quiet = quiet)
+  }
   # Load and filter bbs data
   species_list <- bbs_data$species
   birds <- bbs_data$birds

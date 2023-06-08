@@ -13,7 +13,8 @@ stratify(
   release = 2022,
   sample_data = FALSE,
   return_omitted = FALSE,
-  quiet = FALSE
+  quiet = FALSE,
+  data_custom = NULL
 )
 }
 \arguments{
@@ -48,6 +49,9 @@ overlap with any stratum. For checking and troubleshooting. Default
 \code{FALSE}.}
 
 \item{quiet}{Logical. Suppress progress messages? Default \code{FALSE}.}
+
+\item{data_custom}{List of dataframes that should be exactly like BBS data.
+WARNING: Use at your own risk!}
 }
 \value{
 List of (meta) data.
