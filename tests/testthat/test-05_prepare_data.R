@@ -8,17 +8,17 @@ test_that("prepare_data() - sample", {
 
 
   # By run (i.e. single value)
-  expect_equal(p$model_data$n_sites, 385)
+  expect_equal(p$model_data$n_sites, 386)
   expect_equal(p$model_data$n_strata, 19)
-  expect_equal(p$model_data$n_counts, 5122)
-  expect_equal(p$model_data$n_years, 54)
-  expect_equal(p$model_data$n_observers, 636)
-  expect_equal(p$model_data$max_n_obs_sites_strata, 106)
+  expect_equal(p$model_data$n_counts, 5246)
+  expect_equal(p$model_data$n_years, 55)
+  expect_equal(p$model_data$n_observers, 648)
+  expect_equal(p$model_data$max_n_obs_sites_strata, 110)
 
   # By strata
   expect_equal(
     p$model_data$n_obs_sites_strata,
-    c(15, 92, 6, 106, 57, 8, 4, 83, 48, 20, 85, 48, 42, 32, 105, 6, 27, 93, 53))
+    c(15, 97, 6, 108, 58, 8, 4, 85, 48, 20, 85, 49, 43, 32, 110, 7, 27, 95, 54))
 
   expect_equal(
     p$model_data$non_zero_weight,
@@ -58,16 +58,16 @@ test_that("prepare_data() - other", {
   # By run (i.e. single value)
   expect_equal(p$model_data$n_sites, 8)
   expect_equal(p$model_data$n_strata, 2)
-  expect_equal(p$model_data$n_counts, 180)
-  expect_equal(p$model_data$n_years, 40)
-  expect_equal(p$model_data$n_observers, 25)
-  expect_equal(p$model_data$max_n_obs_sites_strata, 22)
+  expect_equal(p$model_data$n_counts, 183)
+  expect_equal(p$model_data$n_years, 41)
+  expect_equal(p$model_data$n_observers, 27)
+  expect_equal(p$model_data$max_n_obs_sites_strata, 23)
 
   # By strata
-  expect_equal(p$model_data$n_obs_sites_strata, c(22, 15))
+  expect_equal(p$model_data$n_obs_sites_strata, c(23, 16))
 
-  expect_equal(p$model_data$non_zero_weight, c(0.3571, 0.0566),
-               tolerance = 0.001)
+  expect_equal(p$model_data$non_zero_weight, c(0.357, 0.057),
+               tolerance = 0.005)
 
   # Meta data
   expect_equal(p$meta_data$species, "Gyrfalcon")

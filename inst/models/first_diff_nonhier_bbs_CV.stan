@@ -13,6 +13,7 @@ data {
   int<lower=1> n_counts;
   int<lower=1> n_years;
   int<lower=1> fixed_year; //middle year of the time-series scaled to ~(n_years/2)
+  int<lower=1> n_years_m1; // n_years-1
 
 
   array[n_counts] int<lower=0> count;              // count observations
@@ -83,9 +84,6 @@ transformed data {
      array[n_test] int first_year_te = first_year[test];
      array[n_test] int observer_te = observer[test];
 
-     int<lower=1> n_years_m1 = n_years-1;
-
-
 
 }
 
@@ -140,14 +138,12 @@ for(s in 1:n_strata){
 // first half of time-series - runs backwards from fixed_year
   for(t in Iy1){
     beta[s,t] = (sdbeta[s] * beta_raw[s,t]);// + BETA[t];
-    yeareffect[s,t] = yeareffect[s,t+1] + beta[s,t];
-  //  YearEffect[t] = YearEffect[t+1] + BETA[t]; // hyperparameter trajectory interesting to monitor but no direct inference
+    yeareffect[s,t] = yeareffect[s,t+1] - beta[s,t];
   }
 // second half of time-series - runs forwards from fixed_year
    for(t in Iy2){
     beta[s,t] = (sdbeta[s] * beta_raw[s,t-1]);// + BETA[t-1];//t-1 indicators to match dimensionality
     yeareffect[s,t] = yeareffect[s,t-1] + beta[s,t];
-   // YearEffect[t] = YearEffect[t-1] + BETA[t-1];
   }
 }
    strata = (sdstrata*strata_raw) + STRATA;
@@ -192,15 +188,15 @@ model {
   }
   sdobs ~ normal(0,0.3); // informative prior on scale of observer effects - suggests observer variation larger than 3-4-fold differences is unlikely
   sdste ~ student_t(3,0,1); //prior on sd of site effects
-  sdbeta ~ student_t(3,0,0.1); // prior on sd of differences among strata
+  sdbeta ~ student_t(3,0,0.2); // prior on sd of differences among strata
   //sdBETA ~ student_t(3,0,0.1); // prior on sd of mean hyperparameter differences
 
 
-  obs_raw ~ std_normal();//observer effects
-  //sum(obs_raw) ~ normal(0,0.001*n_observers); // constraint isn't useful here
+  obs_raw ~ std_normal(); // ~ student_t(3,0,1);//observer effects
+  sum(obs_raw) ~ normal(0,0.001*n_observers); // constraint may not be necessary
 
   ste_raw ~ std_normal();//site effects
-  //sum(ste_raw) ~ normal(0,0.001*n_sites); //constraint isn't useful here
+  sum(ste_raw) ~ normal(0,0.001*n_sites); //constraint may not be necessary
 
 
   //BETA_raw ~ std_normal();// prior on fixed effect mean intercept
@@ -279,7 +275,7 @@ if(use_pois){
 
    }else{
      noise = 0;
-  log_lik_cv[i] = neg_binomial_2_log_lpmf(count_te[i] | strata + yeareffect[strat_te[i],year_te[i]] + eta*first_year_te[i] + ste + obs + noise, phi);
+  log_lik_cv[i] = neg_binomial_2_log_lpmf(count_te[i] | strata[strat_te[i]] + yeareffect[strat_te[i],year_te[i]] + eta*first_year_te[i] + ste + obs + noise, phi);
 
    }
 

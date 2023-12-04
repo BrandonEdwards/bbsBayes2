@@ -78,9 +78,9 @@ check_model <- function(model, model_variant) {
   if(model_variant == "nonhier") {
     if(model != "first_diff") stop("`model_variant` 'nonhier' only allowed ",
                                    "for `first_diff` models", call. = FALSE)
-   warning("Non-hierarchial models are generally not recommended ",
-           "(see ?bbs_models), but provided for compatibility with USGS ",
-           "methods", call. = FALSE, immediate. = TRUE)
+   # warning("Non-hierarchial models are generally not recommended ",
+   #         "(see ?bbs_models), but provided for compatibility with USGS ",
+   #         "methods", call. = FALSE, immediate. = TRUE)
   }
 
   model
@@ -139,7 +139,7 @@ check_basis <- function(basis) {
 check_init <- function(init, chains) {
   if(inherits(init, "list")) {
     if(length(init) != chains) {
-      message("One set of `init` values supplied, duplicating for each chain.")
+      #message("One set of `init` values supplied, duplicating for each chain.")
       orig <- init
       init <- list()
       for(n in seq_len(chains)) init[[n]] <- orig
@@ -177,10 +177,10 @@ check_dir <- function(output_dir) {
   }
 }
 
-check_file <- function(output_basename, model, model_variant) {
+check_file <- function(output_basename, species, model, model_variant) {
   if(is.null(output_basename)) {
-    output_basename <- paste0("BBS_STAN_", model, "_", model_variant,
-                              "_", Sys.Date())
+    output_basename <- paste0("BBS_", species,"_", model, "_", model_variant,
+                              "_", format(Sys.time(), "%Y%m%d%H%M"),"_STAN")
   } else if(!inherits(output_basename, "character")) {
     stop("`output_basename` should be a text string indicating the name of ",
          "the file to create (no extension)", call. = FALSE)
@@ -280,7 +280,7 @@ check_strata <- function(strata, custom = NULL, simple = FALSE,
 }
 
 check_release <- function(release, all = FALSE) {
-  chk <- c("2020", "2022")
+  chk <- c("2020", "2022", "2023")
   if(all) chk <- c("all", chk)
   check_in(release, chk)
 }

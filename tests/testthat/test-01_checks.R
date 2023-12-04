@@ -189,7 +189,7 @@ test_that("model/model_file/model_variant checks", {
   for(i in unique(bbs_models$variant)) expect_silent(check_model_variant(i))
   for(i in seq_len(nrow(bbs_models))) {
     if(bbs_models$variant[i] == "nonhier") {
-      expect_warning(check_model(bbs_models$model[i], bbs_models$variant[i]))
+      #expect_warning(check_model(bbs_models$model[i], bbs_models$variant[i]))
     } else {
       expect_silent(check_model(bbs_models$model[i], bbs_models$variant[i]))
     }
@@ -240,10 +240,10 @@ test_that("check_dir(), check_file()", {
   expect_silent(check_dir(dir))
   unlink(dir, recursive = TRUE)
 
-  expect_silent(check_file("test_name", "slope", "spatial")) %>%
+  expect_silent(check_file("test_name", "AmericanRobin", "slope", "spatial")) %>%
     expect_equal("test_name")
-  expect_silent(check_file(NULL, "slope", "spatial")) %>%
-    expect_equal(paste0("BBS_STAN_slope_spatial_", Sys.Date()))
+  expect_silent(check_file(NULL, "AmericanRobin", "slope", "spatial")) %>%
+    expect_equal(paste0("BBS_","AmericanRobin_slope_spatial_", format(Sys.time(), "%Y%m%d%H%M"),"_STAN"))
   expect_error(check_file("test_name.rds"), "should not have a file extension")
 })
 
