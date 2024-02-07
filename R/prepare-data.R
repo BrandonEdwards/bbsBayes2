@@ -70,7 +70,8 @@ prepare_data <- function(strata_data,
 
   # Add in routes
   obs <- strata_data$routes_strata %>%
-    dplyr::select("country_num", "state_num", "state", "rpid", "bcr", "year",
+    dplyr::select("country_num", "state_num", "state", "rpid", "bcr",
+                  "year", "month", "day", "latitude", "longitude", "start_time",
                   "strata_name", "route", "obs_n") %>%
     dplyr::left_join(obs, by = c("route", "rpid", "year")) %>%
     dplyr::mutate(count = tidyr::replace_na(.data$count, 0))
