@@ -10,7 +10,7 @@ stratify(
   strata_custom = NULL,
   combine_species_forms = TRUE,
   level = "state",
-  release = 2023,
+  release = 2024,
   sample_data = FALSE,
   return_omitted = FALSE,
   quiet = FALSE,
@@ -82,8 +82,9 @@ stratification in \code{by} (e.g., "bbs_cws") and then supply a subset of
 To define a completely new custom stratification, specify the name you
 would like use in \code{by} (e.g., "east_west_divide") and then supply a spatial
 data frame with polygons identifying the different strata to
-\code{strata_custom}. Note that this data must have a column called
-\code{strata_name} which names all the strata contained (see examples).
+\code{strata_custom}. Note that this data must have a column called exactly
+\code{strata_name} which names all the strata contained (see examples). This
+column must also be of class character not numeric or factor.
 
 If \code{combine_species_forms} is \code{TRUE} (default), species with multiple forms
 (e.g., "unid. Dusky Grouse / Sooty Grouse") are included in overall species
